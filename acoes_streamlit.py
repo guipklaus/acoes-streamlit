@@ -36,31 +36,37 @@ ax.plot(dias_range, st.session_state.acao1, label="Ação 1", color="blue")
 ax.plot(dias_range, st.session_state.acao2, label="Ação 2", color="orange")
 ax.plot(dias_range, st.session_state.acao3, label="Ação 3", color="green")
 
-# Calcular os limites dinâmicos do eixo Y
-todos_valores = (
-    st.session_state.acao1 +
-    st.session_state.acao2 +
-    st.session_state.acao3
-)
+ax.set_xlim(0, max(10, st.session_state.dias))
 
-if todos_valores:
-    minimo = min(todos_valores) - 5
-    maximo = max(todos_valores) + 5
-    ax.set_ylim(minimo, maximo)
+# Ajustar Y dinamicamente com margem
+todos_os_valores = st.session_state.acao1 + st.session_state.acao2 + st.session_state.acao3
+if todos_os_valores:
+    minimo = min(todos_os_valores)
+    maximo = max(todos_os_valores)
+    margem = (maximo - minimo) * 0.1 + 1
+    ax.set_ylim(minimo - margem, maximo + margem)
 else:
     ax.set_ylim(90, 110)
 
-ax.set_xlim(0, max(10, st.session_state.dias))
 ax.set_title("Variação das Ações")
 ax.set_xlabel("Dias")
 ax.set_ylabel("Valor")
 ax.legend()
 
-# Mostrar os valores atuais no canto direito
-st.sidebar.markdown("### Últimos valores")
-st.sidebar.markdown(f"🟦 **Ação 1:** {st.session_state.acao1[-1]:.2f}" if st.session_state.acao1 else "🟦 Ação 1: ---")
-st.sidebar.markdown(f"🟧 **Ação 2:** {st.session_state.acao2[-1]:.2f}" if st.session_state.acao2 else "🟧 Ação 2: ---")
-st.sidebar.markdown(f"🟩 **Ação 3:** {st.session_state.acao3[-1]:.2f}" if st.session_state.acao3 else "🟩 Ação 3: ---")
+# Adicionar os valores no canto superior esquerdo do gráfico
+if st.session_state.acao1:
+    texto_valores = (
+        f"Ação 1: {st.session_state.acao1[-1]:.2f}\n"
+        f"Ação 2: {st.session_state.acao2[-1]:.2f}\n"
+        f"Ação 3: {st.session_state.acao3[-1]:.2f}"
+    )
+    ax.text(
+        0.01, 0.98, texto_valores,
+        transform=ax.transAxes,
+        verticalalignment='top',
+        fontsize=10,
+        bbox=dict(facecolor='white', alpha=0.7, edgecolor='gray')
+    )
 
 # Mostrar gráfico
 st.pyplot(fig)
