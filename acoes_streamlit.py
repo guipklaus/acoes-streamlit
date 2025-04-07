@@ -36,8 +36,21 @@ ax.plot(dias_range, st.session_state.acao1, label="Ação 1", color="blue")
 ax.plot(dias_range, st.session_state.acao2, label="Ação 2", color="orange")
 ax.plot(dias_range, st.session_state.acao3, label="Ação 3", color="green")
 
+# Calcular os limites dinâmicos do eixo Y
+todos_valores = (
+    st.session_state.acao1 +
+    st.session_state.acao2 +
+    st.session_state.acao3
+)
+
+if todos_valores:
+    minimo = min(todos_valores) - 5
+    maximo = max(todos_valores) + 5
+    ax.set_ylim(minimo, maximo)
+else:
+    ax.set_ylim(90, 110)
+
 ax.set_xlim(0, max(10, st.session_state.dias))
-ax.set_ylim(90, 110)
 ax.set_title("Variação das Ações")
 ax.set_xlabel("Dias")
 ax.set_ylabel("Valor")
