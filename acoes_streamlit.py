@@ -27,7 +27,7 @@ if st.button("Próximo dia"):
     nova_variacao(st.session_state.acao3)
 
 # Criar gráfico com tamanho reduzido
-fig, ax = plt.subplots(figsize=(8, 4))
+fig, ax = plt.subplots(figsize=(6, 3))
 
 dias_range = list(range(1, st.session_state.dias))
 
