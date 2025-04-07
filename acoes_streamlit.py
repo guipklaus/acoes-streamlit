@@ -17,7 +17,6 @@ if "dias" not in st.session_state:
 if st.button("Próximo dia"):
     st.session_state.dias += 1
 
-    # Simular variação de cada ação
     def nova_variacao(lista):
         variacao = randint(-10, 10)
         novo = lista[-1] + variacao if lista else randint(80, 120)
@@ -27,8 +26,8 @@ if st.button("Próximo dia"):
     nova_variacao(st.session_state.acao2)
     nova_variacao(st.session_state.acao3)
 
-# Criar gráfico
-fig, ax = plt.subplots()
+# Criar gráfico com tamanho reduzido
+fig, ax = plt.subplots(figsize=(8, 4))
 
 dias_range = list(range(1, st.session_state.dias))
 
@@ -38,7 +37,7 @@ ax.plot(dias_range, st.session_state.acao3, label="Ação 3", color="green")
 
 ax.set_xlim(0, max(10, st.session_state.dias))
 
-# Ajustar Y dinamicamente com margem
+# Ajuste dinâmico do eixo Y
 todos_os_valores = st.session_state.acao1 + st.session_state.acao2 + st.session_state.acao3
 if todos_os_valores:
     minimo = min(todos_os_valores)
@@ -53,20 +52,16 @@ ax.set_xlabel("Dias")
 ax.set_ylabel("Valor")
 ax.legend()
 
-# Adicionar os valores no canto superior esquerdo do gráfico
+# Adicionar valores coloridos no canto superior esquerdo
 if st.session_state.acao1:
-    texto_valores = (
-        f"Ação 1: {st.session_state.acao1[-1]:.2f}\n"
-        f"Ação 2: {st.session_state.acao2[-1]:.2f}\n"
-        f"Ação 3: {st.session_state.acao3[-1]:.2f}"
-    )
-    ax.text(
-        0.01, 0.98, texto_valores,
-        transform=ax.transAxes,
-        verticalalignment='top',
-        fontsize=10,
-        bbox=dict(facecolor='white', alpha=0.7, edgecolor='gray')
-    )
+    ax.text(0.01, 0.98, f"Ação 1: {st.session_state.acao1[-1]:.2f}", transform=ax.transAxes,
+            verticalalignment='top', fontsize=10, color='blue')
+
+    ax.text(0.01, 0.93, f"Ação 2: {st.session_state.acao2[-1]:.2f}", transform=ax.transAxes,
+            verticalalignment='top', fontsize=10, color='orange')
+
+    ax.text(0.01, 0.88, f"Ação 3: {st.session_state.acao3[-1]:.2f}", transform=ax.transAxes,
+            verticalalignment='top', fontsize=10, color='green')
 
 # Mostrar gráfico
 st.pyplot(fig)
